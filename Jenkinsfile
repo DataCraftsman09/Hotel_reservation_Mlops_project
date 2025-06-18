@@ -46,7 +46,7 @@ pipeline{
 
                         docker build -t gcr.io/${GCP_PROJECT}/ml-Projects_HMRS .
 
-                        docker push gcr.io/${GCP_PROJECT}/ml-Projects_HMRS 
+                        docker push gcr.io/${GCP_PROJECT}/ml-Projects_hmrs 
                         '''
                     }
                 }
