@@ -52,5 +52,28 @@ pipeline{
                 }
             }
         }
+
+        stage("Deploy to GCR"){
+            steps{
+                withCredentials([file(credentialsId : 'GCP_Key',variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
+                    script{
+                        echo 'Deploy to GCR...............'
+                        sh ''' 
+                        export PATH=$PATH:${GCLOUD_PATH}
+
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+
+                        gcloud config set project ${GCP_PROJECT}
+
+                        gcloud run deploy ml-projects_hmrs \
+                            --image=gcr.io/${GCP_PROJECT}/ml-projects_hmrs \
+                            --platform=managed \
+                            --region=us-central1 \
+                            --allow=unauthenticated
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
